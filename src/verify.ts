@@ -1,7 +1,7 @@
 import { Client, Guild, Snowflake } from "discord.js"
 
 export async function isMember(client: Client, uid: Snowflake, gid: Snowflake): Promise<boolean> {
-  const guild: Guild | undefined = client.guilds.cache.get(gid);
+  const guild: Guild | undefined = await client.guilds.fetch(gid);
   if (guild === undefined) {
     throw new Error("Guild ID undefined.");
   }
