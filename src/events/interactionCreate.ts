@@ -1,7 +1,7 @@
-import { Events } from "discord.js";
+import { ClientEvents, Events } from "discord.js";
 
 export const InteractionCreate = {
-  name: Events.InteractionCreate,
+  name: Events.InteractionCreate as keyof ClientEvents,
   async execute(interaction) {
     if (!interaction.isChatInputCommand()) return;
 

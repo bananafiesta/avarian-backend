@@ -28,12 +28,18 @@ for (const commandName in CommandMap) {
 // });
 
 for (const event of EventList) {
-  if (event.once) {
-    client.once(event.name, (...args) => event.execute(...args));
+  // if (event.once) {
+  //   client.once(event.name, (...args) => event.execute(...args));
+  // } else {
+  //   client.on(event.name, (...args) => event.execute(...args));
+  // }
+  if ('once' in event) {
+    client.once(event.name, (...args: Parameters<typeof event.execute>) => event.execute(...args));
   } else {
-    client.on(event.name, (...args) => event.execute(...args));
+    client.on(event.name, (...args: Parameters<typeof event.execute>) => event.execute(...args));
   }
 }
+
 
 client.login(token);
 
