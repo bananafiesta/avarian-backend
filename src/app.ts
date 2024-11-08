@@ -1,7 +1,6 @@
 import 'dotenv/config';
-import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import { Client, Collection, GatewayIntentBits } from 'discord.js';
+
 import { CommandMap } from './commands/command-map.js';
 import { EventList } from './events/eventlist.js';
 
@@ -12,7 +11,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.commands = new Collection();
 
-
+// Load commands
 for (const commandName in CommandMap) {
   const command = CommandMap[commandName];
   console.log(command);
@@ -23,7 +22,7 @@ for (const commandName in CommandMap) {
   }
 }
 
-
+// Load Events
 for (const event of EventList) {
 
   if ('once' in event) {
