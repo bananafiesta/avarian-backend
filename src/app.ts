@@ -3,7 +3,7 @@ import { Client, Collection, GatewayIntentBits } from 'discord.js';
 
 import { CommandMap } from './commands/command-map.js';
 import { EventList } from './events/eventlist.js';
-import { isMember } from './verify.js';
+import { isMember, hasPermission } from './verify.js';
 
 
 
