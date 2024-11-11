@@ -1,6 +1,6 @@
 import { REST, Routes } from "discord.js";
 import 'dotenv/config';
-import { CommandMap } from "./commands/command-map.js";
+import { CommandMap } from "./commands/command-map";
 
 const clientId = process.env.CLIENT_ID;
 const guildId = process.env.GUILD_ID;
