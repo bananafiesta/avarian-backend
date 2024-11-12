@@ -1,8 +1,7 @@
 const jwt = require('jsonwebtoken');
-import {supabase} from '../services/supabase';
 import { Request, Response, NextFunction } from 'express';
 
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
   user?: any;
 }
 
@@ -21,24 +20,24 @@ export async function decodeJWT(req: AuthenticatedRequest, res: Response, next: 
   }
 }
 
-export async function verifyUser(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-  try {
-    const userId = req.user?.sub;
+// export async function verifyUser(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+//   try {
+//     const userId = req.user?.sub;
 
-    if (!userId) {
-      res.status(400).json({ error: 'User ID missing from request' });
-    }
-    const {data, error} = await supabase.schema('public').from('users').select('id').eq('id', userId);
-    if (error) {
-      res.status(500).json({ error: error.message });
-    }
+//     if (!userId) {
+//       res.status(400).json({ error: 'User ID missing from request' });
+//     }
+//     const {data, error} = await supabase.schema('public').from('users').select('id').eq('id', userId);
+//     if (error) {
+//       res.status(500).json({ error: error.message });
+//     }
 
-    if (data) {
+//     if (data) {
       
-    } else {
+//     } else {
       
-    }
-  } catch (error) {
-    return res.status(500).json({ error: 'Server error' });
-  }
-}
+//     }
+//   } catch (error) {
+//     return res.status(500).json({ error: 'Server error' });
+//   }
+// }
