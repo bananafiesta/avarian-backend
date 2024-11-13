@@ -1,7 +1,7 @@
 import { queryLeaderboard } from "../db/auraskillsDb";
 
-export function fetchLeaderboard(): string {
-  const leaderboardQuery = queryLeaderboard();
+export async function fetchLeaderboard(): Promise<string> {
+  const leaderboardQuery = await queryLeaderboard();
   const leaderboard = JSON.stringify(leaderboardQuery);
   return leaderboard;
 }
