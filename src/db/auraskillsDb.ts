@@ -1,7 +1,7 @@
 import mysql from 'mysql';
 import 'dotenv/config';
 
-export function leaderboardDb() {
+export function queryLeaderboard(): string {
 
 const connection = mysql.createConnection({
   host: process.env.AURASKILLS_HOST,
@@ -23,8 +23,9 @@ connection.query("SELECT users.player_uuid, SUM(skills.skill_level) as total FRO
   if (err) throw err;
   console.log(rows);
   connection.end();
-  return JSON.stringify(rows);
+  return rows;
 })
 connection.end();
+return "";
 
 }
