@@ -1,11 +1,12 @@
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express';
 
 export interface AuthenticatedRequest extends Request {
   user?: any;
 }
 
-export async function decodeJWT(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export function decodeJWT(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
     res.status(401).json({error: 'Token missing'});
