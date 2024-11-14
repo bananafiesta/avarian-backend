@@ -11,7 +11,7 @@ function newConnection() {
   })
 }
 
-export async function findUserEconomy(player_uuids: string[]) {
+export async function findUserEconomy(player_uuids: string[]): Promise<any[]> {
   const connection = newConnection();
   connection.connect();
   // const query = `SELECT balance FROM xconomy WHERE uid = '${player_uuid}'`
