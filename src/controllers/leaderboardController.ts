@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { fetchLeaderboard } from "../services/leaderboard";
 
 
-export async function getLeaderboard(req: Request, res: Response, next: NextFunction) {
+export async function getLeaderboard(req: Request, res: Response, next: NextFunction): Promise<void> {
   
   try {
     const leaderboard = await fetchLeaderboard();
