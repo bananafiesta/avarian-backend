@@ -11,10 +11,11 @@ function newConnection() {
   })
 }
 
-export async function findUserEconomy(player_uuid: string) {
+export async function findUserEconomy(player_uuids: string[]) {
   const connection = newConnection();
   connection.connect();
-  const query = `SELECT balance FROM xconomy WHERE uid = '${player_uuid}'`
+  // const query = `SELECT balance FROM xconomy WHERE uid = '${player_uuid}'`
+  const query = `SELECT balance, uid FROM xconomy WHERE uid in (?)`;
   // connection.query(query, (err, rows, fields) => {
   //   connection.end();
   //   if (err) throw err;
@@ -22,7 +23,8 @@ export async function findUserEconomy(player_uuid: string) {
   
   // })
   return new Promise((resolve, reject) => {
-    connection.query(query, (err, rows, fields) => {
+    // connection.query(query, (err, rows, fields) => {
+    connection.query(query, [player_uuids], (err, rows, fields) => {
       connection.end();
       if (err) {
         return reject(err.message);
