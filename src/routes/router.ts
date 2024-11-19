@@ -7,6 +7,6 @@ import { getMCUsername } from '../controllers/proxyController';
 
 export const router = express.Router();
 
-router.get('/leaderboard', getLeaderboard);
+router.get('/leaderboard/:skill', getLeaderboard);
 router.get('/profile/wallet', decodeJWT, getWallet);
 router.get('/mojang/:uuid', getMCUsername);
