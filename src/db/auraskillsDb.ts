@@ -29,7 +29,7 @@ export const skills = [
 ]
 
 export async function queryLeaderboard(leaderboardOption: string): Promise<string> {
-  let query = ""
+  let query = "";
   if (leaderboardOption == "total") {
     query = "SELECT users.player_uuid, SUM(skills.skill_level) as total FROM auraskills_skill_levels AS skills INNER JOIN auraskills_users as users ON users.user_id = skills.user_id GROUP BY users.user_id ORDER BY total DESC, SUM(skills.skill_xp) DESC LIMIT 25";
   } else if (skills.includes(leaderboardOption)) {
@@ -41,6 +41,26 @@ export async function queryLeaderboard(leaderboardOption: string): Promise<strin
   const connection = newConnection();
   connection.connect();
 
+  return new Promise((resolve, reject) => {
+    connection.query(query, (err, rows, fields) => {
+      connection.end();
+      if (err) {
+        return reject(err.message);
+      }
+      resolve(rows);
+    })
+  })
+}
+
+export async function querySkill(option: string, uuid: string): Promise<{total: number}> {
+  let query = "";
+  if (option == "total") {
+    query = `SELECT SUM(skills.skill_level) as total FROM auraskills_skill_levels AS skills INNER JOIN auraskills_users as users ON users.user_id = skills.user_id WHERE users.player_uuid = '${uuid}' LIMIT 1`
+  } else if (skills.includes(option)) {
+    query = `SELECT skills.skill_level as total FROM auraskills_skill_levels AS skills INNER JOIN auraskills_users as users ON users.user_id = skills.user_id WHERE users.player_uuid = '${uuid}' AND skills.skill_name = 'auraskills/${option}' LIMIT 1`
+  }
+  const connection = newConnection();
+  connection.connect();
   return new Promise((resolve, reject) => {
     connection.query(query, (err, rows, fields) => {
       connection.end();
