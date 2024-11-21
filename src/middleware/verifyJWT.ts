@@ -7,7 +7,9 @@ interface AuthenticatedRequest extends Request {
 }
 
 export function decodeJWT(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
-  const token = req.headers?.authorization;
+  const authHeader = req.headers.authorization;
+  // const token = req.headers?.authorization;
+  const token = authHeader && authHeader.split(' ')[1];
   if (!token) {
     res.status(401).json({error: 'Token missing'});
   }
