@@ -22,16 +22,16 @@ export async function authToPlayerProfiles(authUUID: string) {
   }
   let output = [];
   let profilePromise = [];
-  for (const player_uuid in player_uuids) {
+  for (const player_uuid of player_uuids) {
     let player = {uuid: player_uuid};
     let promises = [];
     const balancePromise = findUserEconomy(player_uuid).then((result) => {
-      player['balance'] = result.balance;
+      player['balance'] = result[0].balance;
     });
     promises.push(balancePromise);
-    for (const skill in skills) {
+    for (const skill of skills) {
       let tempPromise = querySkill(skill, player_uuid).then((result) => {
-        player[`${skill}`] = result.total;
+        player[`${skill}`] = result[0].total;
       })
       promises.push(tempPromise);
     }
@@ -39,5 +39,8 @@ export async function authToPlayerProfiles(authUUID: string) {
     profilePromise.push(playerPromise);
   }
   await Promise.all(profilePromise);
-  return output
+  // Return list of profiles sorted, to ensure same order on different queries
+  return output.sort((a: {uuid: string}, b: {uuid: string}) => {
+    return (a.uuid < b.uuid) ? -1 : (a.uuid > b.uuid) ? 1 : 0
+  });
 }
