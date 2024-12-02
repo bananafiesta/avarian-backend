@@ -21,7 +21,7 @@ export const Whitelist = {
         .setMinLength(3)
       )
       .addUserOption(option => 
-        option.setName('discord user')
+        option.setName('discordUser')
         .setDescription('Discord user to associate with')
         .setRequired(true)
       )
@@ -45,9 +45,13 @@ export const Whitelist = {
     ),
     
   async execute(interaction) {
-    const subCommand = interaction.options.getSubcommand();
+    const options = interaction.options;
+    const subCommand = options.getSubcommand();
+    const username = options.getString('username');
     if (subCommand === 'add') {
-
+      const discordUser = options.getString('discordUser');
+      // convert username to uuid first
+      
     } else if (subCommand === 'remove') {
 
     }
