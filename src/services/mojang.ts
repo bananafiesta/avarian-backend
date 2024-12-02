@@ -1,6 +1,7 @@
 
 interface mojangData {
   name: string
+  id: string
 }
 
 export async function fetchUsername(uuid: string): Promise<string> {
@@ -10,4 +11,13 @@ export async function fetchUsername(uuid: string): Promise<string> {
   }
   const output: mojangData = await response.json();
   return output.name;
+}
+
+export async function fetchUUID(username: string): Promise<string> {
+  const response = await fetch(`https://https://api.mojang.com/users/profiles/minecraft/${username}`);
+  if (!response.ok) {
+    throw new Error('Error fetching UUID from Mojang');
+  }
+  const output: mojangData = await response.json();
+  return output.id;
 }
