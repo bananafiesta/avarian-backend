@@ -1,4 +1,6 @@
-import { SlashCommandBuilder } from "discord.js";
+import { MessageFlags, SlashCommandBuilder, User } from "discord.js";
+import { fetchUUID } from "../../../mojang";
+import { addMCAccount } from "../../../../db/supabaseDb";
 
 export const Whitelist = {
   data: new SlashCommandBuilder()
@@ -44,16 +46,34 @@ export const Whitelist = {
       )
     ),
     
-  async execute(interaction) {
+  async execute(interaction: any) {
     const options = interaction.options;
     const subCommand = options.getSubcommand();
     const username = options.getString('username');
     if (subCommand === 'add') {
-      const discordUser = options.getString('discordUser');
+      const discordUser: User = options.getUser('discordUser');
+      const discordId = discordUser.id
       // convert username to uuid first
-      
-    } else if (subCommand === 'remove') {
+      const uuid = await fetchUUID(username);
+      await addMCAccount(uuid, username, discordId)
 
+      // send whitelist command to pterodactyl server
+      // TODO
+
+      
+      await interaction.reply(
+        {
+          content: `${username} added to whitelist (or was already added).`,
+          flags: MessageFlags.Ephemeral
+        }
+      );
+    } else if (subCommand === 'remove') {
+      await interaction.reply(
+        {
+          content: `Command not implemented yet`,
+          flags: MessageFlags.Ephemeral
+        }
+      );
     }
   }
   
