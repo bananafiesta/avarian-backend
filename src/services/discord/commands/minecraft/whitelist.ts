@@ -1,4 +1,4 @@
-import { MessageFlags, SlashCommandBuilder, User } from "discord.js";
+import { MessageFlags, SlashCommandBuilder, User, PermissionFlagsBits } from "discord.js";
 import { fetchUUID } from "../../../mojang";
 import { addMCAccount } from "../../../../db/supabaseDb";
 
@@ -6,6 +6,7 @@ export const Whitelist = {
   data: new SlashCommandBuilder()
     .setName('whitelist')
     .setDescription('Controls the whitelist for the Minecraft server.')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addSubcommand(subcommand => 
       subcommand.setName('add')
       .setDescription('Add player to the whitelist')
