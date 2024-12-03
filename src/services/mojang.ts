@@ -14,7 +14,7 @@ export async function fetchUsername(uuid: string): Promise<string> {
 }
 
 export async function fetchUUID(username: string): Promise<string> {
-  const response = await fetch(`https://https://api.mojang.com/users/profiles/minecraft/${username}`);
+  const response = await fetch(`https://api.mojang.com/users/profiles/minecraft/${username}`);
   if (!response.ok) {
     throw new Error('Error fetching UUID from Mojang');
   }
