@@ -8,26 +8,26 @@ export const Whitelist = {
     .setName('whitelist')
     .setDescription('Controls the whitelist for the Minecraft server.')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .addSubcommand(subcommand => 
-      subcommand.setName('add')
+    .addSubcommand(subcommand => subcommand
+      .setName('add')
       .setDescription('Add a player to the whitelist.')
-      .addStringOption(option => 
-        option.setName('username')
+      .addStringOption(option => option
+        .setName('username')
         .setDescription(`Player's Minecraft username`)
         .setRequired(true)
         .setMinLength(3)
       )
-      .addUserOption(option => 
-        option.setName('discord_user')
+      .addUserOption(option => option
+        .setName('discord_user')
         .setDescription('Discord user to associate with')
         .setRequired(true)
       )
     )
-    .addSubcommand(subcommand => 
-      subcommand.setName('remove')
+    .addSubcommand(subcommand => subcommand
+      .setName('remove')
       .setDescription('Remove a player from the whitelist.')
-      .addStringOption(option => 
-        option.setName('username')
+      .addStringOption(option => option
+        .setName('username')
         .setDescription(`Player's Minecraft username`)
         .setRequired(true)
         .setMinLength(3)
