@@ -66,9 +66,23 @@ export const Whitelist = {
         }
       );
     } else if (subCommand === 'remove') {
+      // send command to pterodactyl server
+      fetch(`${process.env.PTERODACTYL_HOST}/api/client/servers/${process.env.PTERODACTYL_PROXY_ID}/command`, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.PTERODACTYL_KEY}`
+        },
+        body: JSON.stringify({
+          command: `vcl remove ${username}`
+        })
+      })
+      console.log(`Removed ${username} from whitelist.`)
+
       await interaction.reply(
         {
-          content: `Command not implemented yet`,
+          content: `${username} removed from whitelist.`,
           // flags: MessageFlags.Ephemeral
         }
       );
