@@ -25,7 +25,7 @@ export const Server = {
       .setName('start')
       .setDescription('Starts a server if powered off.')
       .addStringOption(option => option
-        .setName('server_id')
+        .setName('server_name')
         .setDescription('Server to start')
         .setRequired(true)
         .addChoices(serversArray)
@@ -74,7 +74,7 @@ export const Server = {
         }
       );
     } else if (subCommand === 'start') {
-      const targetId = options.getString('server_id');
+      const targetId = options.getString('server_name');
       const targetServer = serverIDs[targetId];
       const response = await fetch(
         `${process.env.PTERODACTYL_HOST}/api/client/servers/${targetServer}/power`,

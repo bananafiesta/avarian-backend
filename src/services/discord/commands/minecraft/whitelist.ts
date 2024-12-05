@@ -2,7 +2,6 @@ import { MessageFlags, SlashCommandBuilder, User, PermissionFlagsBits } from "di
 import { fetchUUID } from "../../../mojang";
 import { addMCAccount } from "../../../../db/supabaseDb";
 import 'dotenv/config'
-import { response } from "express";
 
 export const Whitelist = {
   data: new SlashCommandBuilder()
