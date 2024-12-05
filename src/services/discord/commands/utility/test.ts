@@ -5,8 +5,6 @@ export const Test = {
     .setName('test')
     .setDescription('Test command. Use responsibly.'),
   async execute(interaction) {
-    await interaction.reply(`Test`)
-      .then((message) => console.log(`Reply sent with content ${message.content}`))
-      .catch(console.error);
+    await interaction.reply(`Test`);
   },
 };
