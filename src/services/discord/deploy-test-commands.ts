@@ -2,9 +2,9 @@ import { REST, Routes } from "discord.js";
 import 'dotenv/config';
 import { CommandMap } from "./commands/command-map";
 
-const clientId = process.env.CLIENT_ID;
+const clientId = process.env.CLIENT_TEST_ID;
 const guildId = process.env.GUILD_ID;
-const token = process.env.DISCORD_TOKEN;
+const token = process.env.DISCORD_TEST_TOKEN;
 
 const commands = [];
 
