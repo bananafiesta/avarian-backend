@@ -57,7 +57,7 @@ export const Whitelist = {
         body: JSON.stringify({
           command: `vcl add ${username}`
         })
-      })
+      });
       if (!response.ok) {
         throw new Error(`Error while sending request to proxy`)
       }
@@ -81,7 +81,7 @@ export const Whitelist = {
         body: JSON.stringify({
           command: `vcl remove ${username}`
         })
-      })
+      });
       if (!response.ok) {
         throw new Error('Error while sending request to proxy')
       }

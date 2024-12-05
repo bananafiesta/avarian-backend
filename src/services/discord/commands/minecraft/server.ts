@@ -55,7 +55,7 @@ export const Server = {
         }).then((result) => {
           currStatus['status'] = result["attributes"]["current_state"];
           statuses.push(currStatus);
-        })
+        });
         promises.push(currPromise);
       }
       // Wait for all fetches to finish
@@ -74,7 +74,29 @@ export const Server = {
         }
       );
     } else if (subCommand === 'start') {
-
+      const targetId = options.getString('server_id');
+      const targetServer = serverIDs[targetId];
+      const response = await fetch(
+        `${process.env.PTERODACTYL_HOST}/api/client/servers/${targetServer}/power`,
+        {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${process.env.PTERODACTYL_KEY}`
+          },
+          body: JSON.stringify({signal: "start"})
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Error while sending request to ${targetId}`)
+      }
+      console.log(`Started ${targetId}, if not already running`)
+      await interaction.reply(
+        {
+          content: `Start command sent.`
+        }
+      )
     }
   }
 }
