@@ -2,6 +2,7 @@ import { MessageFlags, SlashCommandBuilder, User, PermissionFlagsBits } from "di
 import { fetchUUID } from "../../../mojang";
 import { addMCAccount } from "../../../../db/supabaseDb";
 import 'dotenv/config'
+import { response } from "express";
 
 export const Whitelist = {
   data: new SlashCommandBuilder()
@@ -46,7 +47,7 @@ export const Whitelist = {
       await addMCAccount(uuid, username, discordId)
 
       // send whitelist command to pterodactyl server
-      fetch(`${process.env.PTERODACTYL_HOST}/api/client/servers/${process.env.PTERODACTYL_PROXY_ID}/command`, {
+      const response = await fetch(`${process.env.PTERODACTYL_HOST}/api/client/servers/${process.env.PTERODACTYL_PROXY_ID}/command`, {
         method: "POST",
         headers: {
           "Accept": "application/json",
@@ -57,6 +58,9 @@ export const Whitelist = {
           command: `vcl add ${username}`
         })
       })
+      if (!response.ok) {
+        throw new Error(`Error while sending request to proxy`)
+      }
       console.log(`Added ${username} to whitelist.`)
       
       await interaction.reply(
@@ -67,7 +71,7 @@ export const Whitelist = {
       );
     } else if (subCommand === 'remove') {
       // send command to pterodactyl server
-      fetch(`${process.env.PTERODACTYL_HOST}/api/client/servers/${process.env.PTERODACTYL_PROXY_ID}/command`, {
+      const response = await fetch(`${process.env.PTERODACTYL_HOST}/api/client/servers/${process.env.PTERODACTYL_PROXY_ID}/command`, {
         method: "POST",
         headers: {
           "Accept": "application/json",
@@ -78,6 +82,9 @@ export const Whitelist = {
           command: `vcl remove ${username}`
         })
       })
+      if (!response.ok) {
+        throw new Error('Error while sending request to proxy')
+      }
       console.log(`Removed ${username} from whitelist.`)
 
       await interaction.reply(
