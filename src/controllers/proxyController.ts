@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { fetchUsername } from "../services/proxy";
+import { fetchUsername } from "../services/mojang";
 
 export async function getMCUsername(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {

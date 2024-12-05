@@ -16,3 +16,33 @@ export async function getUserMCAccounts(uuid: string): Promise<any[]> {
   return data;
 
 }
+
+export async function addMCAccount(uuid: string, username: string, discordId: string): Promise<void> {
+  const { data: user } = await supabase
+    .schema('public')
+    .from('users')
+    .select('id')
+    .eq('discord_id', discordId)
+    .single()
+
+  const supabaseId = user ? user.id : null;
+  const { error } = await supabase
+    .schema('public')
+    .from('minecraft_accounts')
+    .upsert(
+      {
+        username: username, 
+        player_uuid: uuid, 
+        discord_id: discordId, 
+        id: supabaseId
+      }, 
+      {
+        ignoreDuplicates: true, 
+        onConflict: 'player_uuid'
+      }
+    );
+  if (error) {
+    throw(error);
+  }
+  return;
+}
