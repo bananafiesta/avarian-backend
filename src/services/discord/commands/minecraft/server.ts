@@ -36,8 +36,10 @@ export const Server = {
     const options = interaction.options;
     const subCommand = options.getSubcommand();
     if (subCommand === 'status') {
-      const output = []
+      let statuses = [];
+      let promises = [];
       for (const currentServer of serversArray) {
+        let currStatus = {name: currentServer.name}
         const currPromise = fetch(
           `${process.env.PTERODACTYL_HOST}/api/client/servers/${serverIDs[currentServer.value]}/resources`,
           {
@@ -48,8 +50,29 @@ export const Server = {
               "Authorization": `Bearer ${process.env.PTERODACTYL_KEY}`
             }
           }
-        )
+        ).then((result) => {
+          return result.json()
+        }).then((result) => {
+          currStatus['status'] = result["attributes"]["current_state"];
+          statuses.push(currStatus);
+        })
+        promises.push(currPromise);
       }
+      // Wait for all fetches to finish
+      await Promise.all(promises);
+      // Sort to maintain order
+      statuses.sort((a: {name: string}, b: {name: string}) => {
+        return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0
+      });
+      let message = "";
+      for (const status of statuses) {
+        message = message.concat(status.name, ": ", status.status, "\n")
+      }
+      await interaction.reply(
+        {
+          content: message
+        }
+      );
     } else if (subCommand === 'start') {
 
     }
