@@ -1,7 +1,4 @@
-import mysql from 'mysql';
 import { queryLeaderboard, querySkill } from './auraskillsDb';
-
-// jest.mock('mysql');
 
 const mockConnection = {
   connect: jest.fn(),
@@ -10,7 +7,7 @@ const mockConnection = {
 };
 jest.mock('mysql', () => ({
   createConnection: jest.fn((any) => mockConnection)
-}))
+}));
 
 
 describe('queryLeaderboard', () => {
