@@ -47,7 +47,7 @@ export async function queryLeaderboard(leaderboardOption: string): Promise<strin
       if (err) {
         return reject(err.message);
       }
-      resolve(rows);
+      return resolve(rows);
     })
   })
 }
@@ -69,7 +69,7 @@ export async function querySkill(option: string, uuid: string): Promise<{total: 
       if (err) {
         return reject(err.message);
       }
-      resolve(rows);
+      return resolve(rows);
     })
   })
 }
