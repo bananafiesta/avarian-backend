@@ -8,8 +8,8 @@ app.use(cors());
 app.get('/', (req, res) => {
   res.send('App is online');
 });
-
-app.use('/api', router)
+// Version 1 API
+app.use('/v1', router)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
