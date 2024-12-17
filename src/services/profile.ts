@@ -9,9 +9,12 @@ export interface economy_obj {
 
 export async function getXconomy(uuid: string): Promise<economy_obj[]> {
   const pid_objs: {player_uuid: string}[] = await getUserMCAccounts(uuid);
-  const player_uuids: string[] = pid_objs.map(obj => obj.player_uuid);
-  const economy_objs: economy_obj[] = await findUsersEconomy(player_uuids);
-  return economy_objs;
+  if (pid_objs.length > 0) {
+    const player_uuids: string[] = pid_objs.map(obj => obj.player_uuid);
+    const economy_objs: economy_obj[] = await findUsersEconomy(player_uuids);
+    return economy_objs;
+  }
+  return [];
 }
 
 export async function authToPlayerProfiles(authUUID: string) {

@@ -19,8 +19,9 @@ jest.mock('../db/xconomyDb', () => ({
 }));
 
 describe('getXconomy', () => {
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
+    jest.resetModules();
   });
 
   it('should get all balances for valid user ids', async () => {
@@ -28,7 +29,7 @@ describe('getXconomy', () => {
       {player_uuid: 'uuid1'},
       {player_uuid: 'uuid2'},
     ];
-    (getUserMCAccounts as jest.Mock).mockResolvedValue(mockUUIDs);
+    (getUserMCAccounts as jest.Mock).mockResolvedValueOnce(mockUUIDs);
     const mockEconomyObjs = [
       {balance: 57, uid: 'uuid1'},
       {balance: 31, uid: 'uuid2'},
@@ -41,6 +42,17 @@ describe('getXconomy', () => {
     expect(result).toBe(mockEconomyObjs);
   });
 
+  it('should return an empty array if invalid uuid is given', async () => {
+    const mockEmptyList = [];
+    (getUserMCAccounts as jest.Mock).mockResolvedValue(mockEmptyList);
+    const invalidUUID = 'invalid_uuid';
+    const result = await getXconomy(invalidUUID);
+    expect(getUserMCAccounts).toHaveBeenCalledWith(invalidUUID);
+
+    expect(result).toEqual([]);
+    expect(findUsersEconomy).not.toHaveBeenCalled();
+  });
+
   it('should throw an error if getUserMCAccounts errors', async () => {
     const mockError = new Error('Error getting User Mc accounts');
     (getUserMCAccounts as jest.Mock).mockImplementation(() => {throw mockError});
@@ -49,7 +61,17 @@ describe('getXconomy', () => {
   });
 
   it('should throw an error if findUsersEconomy errors', async () => {
-
+    const mockError = new Error('Error finding users economy objects');
+    const mockUUIDs = [
+      {player_uuid: 'uuid1'},
+      {player_uuid: 'uuid2'},
+    ];
+    (getUserMCAccounts as jest.Mock).mockResolvedValue(mockUUIDs);
+    (findUsersEconomy as jest.Mock).mockRejectedValue(mockError.message);
+    const testUUID = 'any_uuid';
+    await expect(getXconomy(testUUID)).rejects.toBe(mockError.message);
+    expect(getUserMCAccounts).toHaveBeenCalledWith(testUUID);
+    expect(findUsersEconomy).toHaveBeenCalledWith(['uuid1', 'uuid2']);
   });
   
 });
