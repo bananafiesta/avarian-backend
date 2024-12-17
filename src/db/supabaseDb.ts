@@ -1,8 +1,8 @@
-import { supabase } from "../services/supabase";
+import { getSupabaseClient } from "../services/supabase";
 import 'dotenv/config';
 
 export async function getUserMCAccounts(uuid: string): Promise<any[]> {
-
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .schema('public')
     .from('minecraft_accounts')
@@ -18,6 +18,7 @@ export async function getUserMCAccounts(uuid: string): Promise<any[]> {
 }
 
 export async function addMCAccount(uuid: string, username: string, discordId: string): Promise<void> {
+  const supabase = getSupabaseClient();
   const { data: user } = await supabase
     .schema('public')
     .from('users')
