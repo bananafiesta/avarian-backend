@@ -36,3 +36,42 @@ describe('fetchUsername', () => {
     expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('invalid_uuid'));
   });
 });
+
+describe('fetchUUID', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should return a uuid when given a username', async () => {
+    const mockUUID = 'valid_uuid'
+    const mockUsername = 'username'
+    const mockResponse: Partial<Response> = {
+      json: jest.fn().mockResolvedValue({id: mockUUID}),
+      ok: true,
+    };
+    const fetchMock = jest.spyOn(global, 'fetch').mockResolvedValue(mockResponse as Response);
+    const result = await fetchUUID(mockUsername);
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining(mockUsername));
+    expect(mockResponse.json).toHaveBeenCalled();
+    expect(result).toEqual(mockUUID);
+  });
+
+  it('should throw an error if the fetch fails', async () => {
+    const mockError = new Error('Fetch failed');
+    const mockUsername = 'valid_username';
+    const fetchMock = jest.spyOn(global, 'fetch').mockRejectedValue(mockError);
+    await expect(fetchUUID(mockUsername)).rejects.toBe(mockError);
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining(mockUsername));
+  });
+
+  it('should throw an error if response is not ok', async () => {
+    const mockResponse: Partial<Response> = {
+      json: jest.fn(),
+      ok: false,
+    };
+    const fetchMock = jest.spyOn(global, 'fetch').mockResolvedValue(mockResponse as Response);
+    const mockUsername = 'invalid_username';
+    await expect(fetchUUID(mockUsername)).rejects.toThrow('Error fetching UUID from Mojang');
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining(mockUsername));
+  });
+});
