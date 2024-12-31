@@ -1,17 +1,23 @@
-// const jwt = require('jsonwebtoken');
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
   user?: any;
 }
 
 export function decodeJWT(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
   const authHeader = req.headers.authorization;
-  // const token = req.headers?.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
+  let token: string = "";
+  if (authHeader) {
+    // token = authHeader.split(' ')[1];
+    const tokens = authHeader.split(' ');
+    if (tokens.length >= 2) {
+      token = tokens[1];
+    }
+  }
   if (!token) {
     res.status(401).json({error: 'Token missing'});
+    return;
   }
 
   try {
@@ -19,6 +25,7 @@ export function decodeJWT(req: AuthenticatedRequest, res: Response, next: NextFu
     req.user = decoded;
     next();
   } catch (error) {
+    console.log(error);
     res.status(401).json({ error: 'Invalid token' });
   }
 }
