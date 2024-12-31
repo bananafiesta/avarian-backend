@@ -24,7 +24,7 @@ export async function findUsersEconomy(player_uuids: string[]): Promise<any[]> {
         return reject(err.message);
       }
       // Should look like [ RowDataPacket { balance: 50 } ]
-      resolve(rows);
+      return resolve(rows);
     })
   })
 }
@@ -39,7 +39,7 @@ export async function findUserEconomy(player_uuid: string): Promise<{balance: nu
       if (err) {
         return reject(err.message);
       }
-      resolve(rows);
+      return resolve(rows);
     })
   })
 }

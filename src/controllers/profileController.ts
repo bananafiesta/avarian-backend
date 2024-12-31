@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { economy_obj, getXconomy, authToPlayerProfiles } from "../services/profile";
 
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
   user?: user_obj
 }
-interface user_obj {
+export interface user_obj {
   sub?: string
 }
 

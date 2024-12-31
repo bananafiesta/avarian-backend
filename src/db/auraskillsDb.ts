@@ -47,7 +47,7 @@ export async function queryLeaderboard(leaderboardOption: string): Promise<strin
       if (err) {
         return reject(err.message);
       }
-      resolve(rows);
+      return resolve(rows);
     })
   })
 }
@@ -58,6 +58,8 @@ export async function querySkill(option: string, uuid: string): Promise<{total: 
     query = `SELECT SUM(skills.skill_level) as total FROM auraskills_skill_levels AS skills INNER JOIN auraskills_users as users ON users.user_id = skills.user_id WHERE users.player_uuid = '${uuid}' LIMIT 1`
   } else if (skills.includes(option)) {
     query = `SELECT skills.skill_level as total FROM auraskills_skill_levels AS skills INNER JOIN auraskills_users as users ON users.user_id = skills.user_id WHERE users.player_uuid = '${uuid}' AND skills.skill_name = 'auraskills/${option}' LIMIT 1`
+  } else {
+    throw new Error("Invalid leaderboard option");
   }
   const connection = newConnection();
   connection.connect();
@@ -67,7 +69,7 @@ export async function querySkill(option: string, uuid: string): Promise<{total: 
       if (err) {
         return reject(err.message);
       }
-      resolve(rows);
+      return resolve(rows);
     })
   })
 }
